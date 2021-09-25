@@ -52,7 +52,8 @@ namespace GildedRose.Console
                 "Aged Brie" => GetNewAgedBrieQuality(item),
                 "Backstage passes to a TAFKAL80ETC concert" => GetNewBackstagePassQuality(item),
                 "Sulfuras, Hand of Ragnaros" => GetNewSulfurasQuality(item),
-                _ => GetNewDefaultItemQuality(item),
+                "Conjured Mana Cake" => GetNewConjuredQuality(item),
+                _ => GetNewNormalItemQuality(item),
             };
         }
 
@@ -64,7 +65,7 @@ namespace GildedRose.Console
         private static int GetNewAgedBrieQuality(Item item)
         {
             var qualityChange = item.SellIn > 0 ? 1 : 2;
-            return GetNewQuality(item, qualityChange);
+            return GetChangedQuality(item, qualityChange);
         }
 
         private static int GetNewBackstagePassQuality(Item item)
@@ -80,7 +81,7 @@ namespace GildedRose.Console
                 < 11 => 2,
                 _ => 1,
             };
-            return GetNewQuality(item, qualityChange);
+            return GetChangedQuality(item, qualityChange);
         }
 
         private static int GetNewSulfurasQuality(Item item)
@@ -88,13 +89,19 @@ namespace GildedRose.Console
             return item.Quality;
         }
 
-        private static int GetNewDefaultItemQuality(Item item)
+        private static int GetNewConjuredQuality(Item item)
         {
-            var qualityChange = item.SellIn > 0 ? -1 : -2;
-            return GetNewQuality(item, qualityChange);
+            var qualityChange = item.SellIn > 0 ? -2 : -4;
+            return GetChangedQuality(item, qualityChange);
         }
 
-        private static int GetNewQuality(Item item, int qualityChange)
+        private static int GetNewNormalItemQuality(Item item)
+        {
+            var qualityChange = item.SellIn > 0 ? -1 : -2;
+            return GetChangedQuality(item, qualityChange);
+        }
+
+        private static int GetChangedQuality(Item item, int qualityChange)
         {
             if (qualityChange < 0)
             {
