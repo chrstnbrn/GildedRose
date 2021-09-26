@@ -34,12 +34,7 @@ namespace GildedRose.Console
                 return 0;
             }
 
-            var qualityChange = item.SellIn switch
-            {
-                < 6 => 3,
-                < 11 => 2,
-                _ => 1,
-            };
+            var qualityChange = item.SellIn switch { < 6 => 3, < 11 => 2, _ => 1 };
             return item.GetChangedQuality(qualityChange);
         }
 
@@ -67,6 +62,9 @@ namespace GildedRose.Console
 
         private static int GetChangedQuality(this Item item, int qualityChange)
         {
+            // The description says that the quality can never be negative or greater than 50. However, there are no checks for that.
+            // The original code decreased values further if they are already negative and increased them if they are already above 50.
+            // Therefore the following checks are required to preserve the original behavior.
             var minimumQuality = qualityChange < 0 ? Math.Min(0, item.Quality) : int.MinValue;
             var maximumQuality = qualityChange > 0 ? Math.Max(50, item.Quality) : int.MaxValue;
 
