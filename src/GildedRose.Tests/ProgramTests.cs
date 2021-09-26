@@ -12,7 +12,7 @@ namespace GildedRose.Tests
         {
             var program = new Program { Items = new List<Item>() };
 
-            program.UpdateQualityAndSellIn();
+            program.UpdateInventory();
 
             program.Items.Should().BeEmpty();
         }
@@ -66,7 +66,7 @@ namespace GildedRose.Tests
                 } 
             };
 
-            program.UpdateQualityAndSellIn();
+            program.UpdateInventory();
 
             var expected = new List<Item> { 
                 new() { Name = name, Quality = expectedQuality, SellIn = expectedSellIn }

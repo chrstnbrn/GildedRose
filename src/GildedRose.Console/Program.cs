@@ -30,15 +30,15 @@ namespace GildedRose.Console
 
             };
 
-            app.UpdateQualityAndSellIn();
+            app.UpdateInventory();
 
             System.Console.ReadKey();
 
         }
 
-        public void UpdateQualityAndSellIn()
+        public void UpdateInventory()
         {
-            foreach (Item item in Items)
+            foreach (var item in Items)
             {
                 item.Quality = GetNewQuality(item);
                 item.SellIn = GetNewSellIn(item);
@@ -103,19 +103,10 @@ namespace GildedRose.Console
 
         private static int GetChangedQuality(Item item, int qualityChange)
         {
-            if (qualityChange < 0)
-            {
-                var minimumQuality = Math.Min(0, item.Quality);
-                return Math.Max(item.Quality + qualityChange, minimumQuality);
-            }
-            
-            if (qualityChange > 0)
-            {
-                var maximumQuality = Math.Max(50, item.Quality);
-                return Math.Min(item.Quality + qualityChange, maximumQuality);
-            } 
-            
-            return item.Quality;
+            var minimumQuality = qualityChange < 0 ? Math.Min(0, item.Quality) : int.MinValue;
+            var maximumQuality = qualityChange > 0 ? Math.Max(50, item.Quality) : int.MaxValue;
+
+            return Math.Clamp(item.Quality + qualityChange, minimumQuality, maximumQuality);
         }
     }
 }
